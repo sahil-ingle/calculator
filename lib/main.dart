@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 
@@ -23,25 +24,25 @@ class _MainAppState extends State<MainApp> {
 
   List <String> buttons = [
     'AC',
-    '+/-',
     '%',
+    '/',
     'DEL',
     '7',
     '8',
     '9',
-    '/',
+    'x',
     '4',
     '5',
     '6',
-    'x',
+    '-',
     '1',
     '2',
     '3',
-    '-',
+    '+',
+    '00',
     '0',
     '.',
     '=',
-    '+',
   ];
 
   void calculate(){
@@ -55,149 +56,100 @@ class _MainAppState extends State<MainApp> {
     result = eval.toString();
   }
 
+  void onButtonPress(String button){
+    setState(() {
+      if (button == 'AC'){
+        userInput = '';
+        result = '';
+      }else if(button == 'DEL'){
+        userInput = userInput.substring(0,userInput.length - 1);
+      }else if (button == '='){
+        calculate();
+      }else{
+        userInput+=button;
+      }
+    });
+  }
+
+  Color textColor(String button){
+    if (button == 'AC' || button == '%' || button == '/' || button == '+' || button == '-' || button == 'DEL' || button == 'x' || button == '='){
+      return Colors.white;
+  }else {
+      return Colors.black;
+    }
+  }
+  Color getColor(String button){
+    if (button == 'AC' || button == '%' || button == '/' || button == '+' || button == '-' || button == 'DEL' || button == 'x'){
+      return Colors.blueAccent;
+    }else if (button == '='){
+      return Colors.redAccent;
+    }else{
+      return Colors.white;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.blueGrey,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child:Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                Container(
-                  color: Colors.blueAccent,
-                  alignment: Alignment.centerRight,
-                padding: const EdgeInsets.all(40),
-                child: Text(userInput,
-                style: TextStyle(fontSize: 40, color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-                ),
-                Container(
-                  color: Colors.blueAccent,
-                  alignment: Alignment.centerRight,
-                padding: const EdgeInsets.all(20),
-                child: Text(result,
-                style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),),
-                ),
-              
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: GridView.builder(
-                itemCount: buttons.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, crossAxisSpacing: 4, mainAxisSpacing: 4),
-                 itemBuilder: (BuildContext context, int index ){
-                  if (index == 0){
-                    return ElevatedButton(
-              
-                      child: Text(buttons[index],style: TextStyle(color: Colors.white),),
-                      onPressed: (){
-                        setState(() {
-                          userInput = '';
-                          result = '';
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        
-                      ),
-                    );
-                  }else if (index == 1){
-                    return ElevatedButton(
-                      onPressed: () {  },
-                      child: Text(buttons[index],style: TextStyle(color: Colors.white),),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        
-                      ),
-                      
-                    );
-                  }else if (index == 2){
-                    return ElevatedButton(
-                      child: Text(buttons[index],style: TextStyle(color: Colors.white),),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        
-                      ),
-                      onPressed: (){
-                        setState(() {
-                          userInput += buttons[index];
-                        });
-                      },
-                    );
-                  }else if (index == 3){
-                    return ElevatedButton(
-                      child: Text(buttons[index],style: TextStyle(color: Colors.white),),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        
-                      ),
-                      onPressed: (){
-                        setState(() {
-                          userInput = userInput.substring(0,userInput.length - 1);
-                        });
-                      },
-                    );
-                  }else if (index == 18){
-                    return ElevatedButton(
-                      child: Text(buttons[index],style: TextStyle(color: Colors.white),),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        
-                      ),
-                      onPressed: (){
-                        setState(() {
-                          calculate();
-                        });
-                      },
-                    );
-                  }else if (index == 7 || index == 11 || index == 15 || index == 19){
-                    return ElevatedButton(
-                      child: Text(buttons[index],style: TextStyle(color: Colors.white),),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        
-                      ),
-                      onPressed: (){
-                        setState(() {
-                          userInput += buttons[index];
-                        });
-                      },
+        backgroundColor: Colors.lightBlueAccent,
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+                  Expanded(
+                    child: Container(
+                      color: Colors.lightBlueAccent,
+                      alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.all(20),
+                    child: Text(userInput,
+                    style: const TextStyle(fontSize: 56, color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    ),
+                  ),
+                  const Divider(
+                    color: Colors.white,
+                    thickness: 2,
+                    height: 0,
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: Colors.lightBlueAccent,
+                      alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.all(20),
+                    child: Text(result,
+                    style: const TextStyle(fontSize: 40, color: Colors.white, fontWeight: FontWeight.bold),),
+                    ),
+                  ),
+              Expanded(
+                flex:3,
+                child: GridView.builder(
+                  itemCount: buttons.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, crossAxisSpacing: 4, mainAxisSpacing: 4),
+                   itemBuilder: (BuildContext context, int index ){
+                      return ElevatedButton(
+                        onPressed: (){
+                          onButtonPress(buttons[index]);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: getColor(buttons[index]),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                          
+                        ),
+                        child: Text(buttons[index],style: TextStyle(
+                          color: textColor(buttons[index]),
+                          fontSize: 25,
+                          ),
+                          ),
                       );
-                  } 
-                  else{
-                    return ElevatedButton(
-                      child: Text(buttons[index],style: TextStyle(color: Colors.black),),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        
-                      ),
-                      onPressed: (){
-                        setState(() {
-                          userInput += buttons[index];
-                        });
-                      },
-                    );
-                  }
-                 },
-                 ),
-              ),
-          ],
+                   },
+                   ),
+                ),
+            ],
+            
           
-
+          ),
         ),
       ),
     );
